@@ -79,11 +79,11 @@ namespace Zolal {
         if (name == "output") return manifest.build.output;
         if (name == "lang") {
             switch (manifest.build.lang) {
-                case Z::Manifest::OutputLang::Python:
+                case Zolal::OutputLang::Python:
                     return "python";
-                case Z::Manifest::OutputLang::Js:
+                case Zolal::OutputLang::Js:
                     return "js";
-                case Z::Manifest::OutputLang::Native:
+                case Zolal::OutputLang::Native:
                     return "native";
             }
         }

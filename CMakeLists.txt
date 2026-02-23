@@ -43,6 +43,6 @@ if(ENABLE_TESTS)
 
   file(GLOB TEST_SOURCES "tests/*.cpp")
   add_executable(zpp_tests ${TEST_SOURCES})
-  target_link_libraries(zpp_tests PRIVATE zpplib GTest::gtest GTest::gtest_main)
+  target_link_libraries(zpp_tests PRIVATE zolallib GTest::gtest GTest::gtest_main)
   gtest_discover_tests(zpp_tests)
 endif()

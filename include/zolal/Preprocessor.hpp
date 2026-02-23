@@ -8,7 +8,6 @@
 #include <zolal/DirectiveLexer.hpp>
 #include <zolal/Manifest.hpp>
 
-using namespace Z::Manifest;
 namespace Zolal {
     struct ProcessError {
         size_t      line;
@@ -40,7 +39,9 @@ namespace Zolal {
 
       public:
         explicit Preprocessor(const Manifest &m)
-            : manifest(m) {}
+            : manifest(m) {
+            parse_triplets();
+        }
 
         // takes a raw source, splits it into lines, and then finds which lines
         // are directives. It builds the output based on that
