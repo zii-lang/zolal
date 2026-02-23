@@ -106,17 +106,27 @@ namespace Zolal {
         return derived.contains(name);
     }
 
+    // example:
+    // for #if arch == "x86_64" && os_family == "unix",
+    // it recursively evaluates: resolve arch → "x86_64",
+    // compare with "x86_64" → true.
+    // Resolve os_family → "unix", compare → true. true && true → true.
     bool Preprocessor::evaluate(const std::shared_ptr<CondExpr> &expr) const {
         if (!expr) return false;
 
+        // pattern matches on the variant
         return std::visit(
             [&](const auto &val) -> bool {
                 using T = std::decay_t<decltype(val)>;
 
                 if constexpr (std::is_same_v<T, CondLiteral>) {
+                    // it its a name but not a string, we check if it exists
                     if (!val.is_string) return has_var(val.value);
+                    // otherwise we return true of the string is not empty
                     return !val.value.empty();
                 } else if constexpr (std::is_same_v<T, CondBinary>) {
+                    // resolves a condexpr to a string
+                    // so they could be compared later on
                     auto resolve = [&](const std::shared_ptr<CondExpr> &e) -> std::string {
                         if (!e) return "";
                         if (auto *lit = std::get_if<CondLiteral>(&e->value)) {
@@ -159,6 +169,7 @@ namespace Zolal {
             return result;
         }
 
+        // splits the raw source into lines
         std::vector<std::string_view> lines;
         {
             size_t start = 0;
@@ -184,8 +195,11 @@ namespace Zolal {
             bool current_active   = false;
         };
 
+        // a stack of IfState is used to track nested #if, #elif, #else and #end blocks
         std::vector<IfState> stack;
 
+        // checks if all levels of stack are active. meaning if we are inside
+        // a true branch at every nesting level
         auto is_emmiting = [&]() -> bool {
             for (const auto &s : stack) {
                 if (!s.current_active) return false;
@@ -193,6 +207,8 @@ namespace Zolal {
             return true;
         };
 
+        // all levels are active except the current one. used by
+        // #elif and #else to know if we should even evalute the current level
         auto parent_active = [&]() -> bool {
             for (size_t s = 0; s + 1 < stack.size(); s++) {
                 if (!stack[s].current_active) return false;
@@ -202,6 +218,19 @@ namespace Zolal {
 
         std::ostringstream out;
 
+        // for each line, if its a directive, we update the stack and emit a blank line
+        // for example if
+        //
+        // #if arch == "x86_64" && os_family == "unix"
+        // some code
+        // #else
+        // another code
+        // #end
+        //
+        // then the #else up to #end and the directive lines themeselves
+        // are replaced by blank lines. Blank lines preserve the line numbering
+        // in case user needs line numbers for error reportation
+        // Code that is not relevant to the manifest.toml config dont make it to the compiler
         for (size_t i = 0; i < lines.size(); i++) {
             size_t line_num = i + 1;
 

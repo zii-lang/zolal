@@ -30,6 +30,8 @@ namespace Zolal {
         std::unordered_map<std::string, std::string> derived;
 
         void parse_triplets();
+
+        // takes a parsed condition expression and checks if its valid
         bool evaluate(const std::shared_ptr<CondExpr> &expr) const;
         // resolves a variable name to its string value
         std::string resolve_var(const std::string &name) const;
@@ -40,6 +42,8 @@ namespace Zolal {
         explicit Preprocessor(const Manifest &m)
             : manifest(m) {}
 
+        // takes a raw source, splits it into lines, and then finds which lines
+        // are directives. It builds the output based on that
         ProcessResult process(std::string_view source) const;
     };
 
