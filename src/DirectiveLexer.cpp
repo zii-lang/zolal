@@ -172,7 +172,7 @@ namespace Zolal {
     std::string DirectiveLexer::parse_identifier(const std::string &text, size_t &p) {
         std::string result;
 
-        while (p < text.size() && (std::isalnum(text[p] || text[p] == '_'))) {
+        while (p < text.size() && (std::isalnum(text[p]) || text[p] == '_')) {
             result += text[p++];
         }
         return result;
@@ -239,7 +239,7 @@ namespace Zolal {
             if (text[p] == '=' && text[p + 1] == '=') {
                 op    = CondOp::Eq;
                 found = true;
-            } else if (text[p] == '!' && text[p] == '=') {
+            } else if (text[p] == '!' && text[p + 1] == '=') {
                 op    = CondOp::Neq;
                 found = true;
             }
