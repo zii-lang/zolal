@@ -22,7 +22,7 @@ set(LIB_SOURCES
 )
 
 add_library(zolallib STATIC ${LIB_SOURCES})
-target_include_directories(zolallib PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(zolallib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(zolallib PUBLIC tomlplusplus::tomlplusplus)
 
 add_executable(zolal src/main.cpp)
