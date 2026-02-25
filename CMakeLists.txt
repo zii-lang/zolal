@@ -13,7 +13,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(tomlplusplus)
 
-option(ENABLE_TESTS "Enable unit tests" OFF)
+option(ZOLAL_ENABLE_TESTS "Enable unit tests" OFF)
 
 set(LIB_SOURCES
         src/DirectiveLexer.cpp
@@ -28,7 +28,7 @@ target_link_libraries(zolallib PUBLIC tomlplusplus::tomlplusplus)
 add_executable(zolal src/main.cpp)
 target_link_libraries(zolal PRIVATE zolallib)
 
-if(ENABLE_TESTS)
+if(ZOLAL_ENABLE_TESTS)
   find_package(GTest QUIET)
   if(NOT GTest_FOUND)
     FetchContent_Declare(
