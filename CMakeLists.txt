@@ -124,6 +124,8 @@ if(ZOLAL_BUILD_OBJECT)
 	endif()
 endif()
 
+add_library(zolal::zolal ALIAS ${zolal_library})
+
 # Install include directories
 install(
     DIRECTORY include/zolal
