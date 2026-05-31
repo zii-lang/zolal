@@ -136,6 +136,7 @@ target_include_directories(zolal PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 	$<INSTALL_INTERFACE:${zolal_install_incdir}>
 )
+install(TARGETS zolal EXPORT zolal DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 if(ZOLAL_ENABLE_TESTS)
   find_package(GTest QUIET)
