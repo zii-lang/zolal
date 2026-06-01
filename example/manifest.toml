@@ -1,0 +1,11 @@
+[project]
+name = "test_project"
+version = "0.1.0"
+entry = "main.zz"
+
+[build]
+target = ["x86_64-unknown-linux-gnu"]
+output = "test_project"
+
+[sources]
+files = ["main.zz"]

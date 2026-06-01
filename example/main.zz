@@ -1,0 +1,30 @@
+#if arch == "x86_64"
+fn fast_add(a: i64, b: i64) -> i64 {
+    return a + b;
+}
+#elif arch == "aarch64"
+fn fast_add(a: i64, b: i64) -> i64 {
+    return a + b;
+}
+#end
+
+#if os_family == "unix"
+fn platform_init() {
+    // unix init
+}
+#else
+fn platform_init() {
+    // windows init
+}
+#end
+
+#if !gpu_vendor
+fn compute() {
+    // cpu path
+}
+#end
+
+fn main() {
+    platform_init();
+    compute();
+}
