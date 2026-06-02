@@ -1,0 +1,52 @@
+.codehilite, pre[class*="language-"] {
+  background: #282c34;
+  color: #abb2bf;
+  padding: 1em;
+  overflow-x: auto;
+  border-radius: 6px;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-size: 0.9em;
+}
+
+/* Comments */
+.ro-comment, .c {
+  color: #5c6370;
+  font-style: italic;
+}
+
+/* Keywords */
+.ro-keyword, .k {
+  color: #c678dd;
+  font-weight: bold;
+}
+
+/* Names (variables, functions) */
+.ro-name, .n {
+  color: #61afef;
+}
+
+/* Strings */
+.ro-string, .s {
+  color: #98c379;
+}
+
+/* Numbers */
+.ro-number, .m {
+  color: #d19a66;
+}
+
+/* Operators */
+.ro-operator, .o {
+  color: #56b6c2;
+}
+
+/* Punctuation */
+.ro-punctuation, .p {
+  color: #abb2bf;
+}
+
+.language-bash code::before {
+  content: "$ ";
+  color: #6a9955;
+  font-weight: bold;
+}
