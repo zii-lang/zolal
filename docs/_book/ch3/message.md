@@ -1,6 +1,6 @@
 ---
-title: message (function)
-nav_order: 10.0
+title: message
+nav_order: 3.1
 ---
 
 # message (function)
