@@ -30,13 +30,13 @@ option(ZOLAL_BUILD_SHARED "Build shared library" ON)
 option(ZOLAL_BUILD_STATIC "Build static library" ON)
 option(ZOLAL_BUILD_OBJECT "Build object library" OFF) # TODO: NOT YET IMPLEMENTED
 option(ZOLAL_ENABLE_TESTS "Enable unit tests" OFF)
+option(ZOLAL_BUILD_EXECUTEABLE "Build zolal executable" ON)
 
 FetchContent_Declare(
         tomlPlusPlus
         GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
         GIT_TAG        v3.4.0
 )
-
 FetchContent_MakeAvailable(tomlplusplus)
 list(APPEND zolal_libraries "tomlplusplus::tomlplusplus")
 
@@ -132,13 +132,30 @@ install(
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
+if(ZOLAL_BUILD_EXECUTEABLE)
+
+FetchContent_Declare(argparse
+	GIT_REPOSITORY https://github.com/p-ranav/argparse.git
+	GIT_TAG master)
+FetchContent_MakeAvailable(argparse)
+list(APPEND zolal_exe_libs ${zolal_library})
+list(APPEND zolal_exe_libs "argparse")
+
+message(STATUS "")
+message(STATUS "Executable Name : zolal")
+message(STATUS "CXX Compiler    : ${CMAKE_CXX_COMPILER}")
+message(STATUS "Link Libraries  : ${zolal_exe_libs}")
+message(STATUS "")
+
 add_executable(zolal src/main.cpp)
-target_link_libraries(zolal PRIVATE ${zolal_library})
+target_link_libraries(zolal PRIVATE ${zolal_exe_libs})
 target_include_directories(zolal PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 	$<INSTALL_INTERFACE:${zolal_install_incdir}>
 )
 install(TARGETS zolal EXPORT zolal DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+endif()
 
 if(ZOLAL_ENABLE_TESTS)
   find_package(GTest QUIET)
