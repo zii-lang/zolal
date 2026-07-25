@@ -1,0 +1,5 @@
+#pragma once
+
+#cmakedefine01 ZOLAL_VERSION_MAJOR
+#cmakedefine01 ZOLAL_VERSION_MINOR
+#cmakedefine01 ZOLAL_VERSION_PATCH

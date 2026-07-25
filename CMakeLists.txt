@@ -12,6 +12,7 @@ include(FetchContent)
 include(CheckIncludeFiles)
 include(GNUInstallDirs)
 include("cmake/zolal-version.cmake")
+include("cmake/zolal-config.cmake")
 
 set(zolal_libname "zolal")
 
@@ -73,6 +74,7 @@ if(ZOLAL_BUILD_SHARED)
 	target_include_directories(zolal-shared
 		PUBLIC
 			$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+			$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
 			$<INSTALL_INTERFACE:${zolal_install_incdir}>
 	)
 	install(
@@ -104,6 +106,7 @@ if(ZOLAL_BUILD_STATIC)
 	target_include_directories(zolal-static
 		PUBLIC
 			$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+			$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
 			$<INSTALL_INTERFACE:${zolal_install_incdir}>
 	)
 	install(
@@ -155,6 +158,7 @@ if(ZOLAL_BUILD_EXECUTEABLE)
 	target_include_directories(zolal
 		PUBLIC
 			$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+			$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
 			$<INSTALL_INTERFACE:${zolal_install_incdir}>
 	)
 	install(TARGETS zolal EXPORT zolal DESTINATION ${CMAKE_INSTALL_BINDIR})

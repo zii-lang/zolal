@@ -1,3 +1,4 @@
+#include <zolal/Config.hpp>
 #include <zolal/Manifest.hpp>
 #include <zolal/Preprocessor.hpp>
 
@@ -31,14 +32,15 @@ static bool write_file(const std::string &path, const std::string &content) {
 
 int main(int argc, char *argv[]) {
     // TODO: get this from argv[0], split slashes and get last.
-    argparse::ArgumentParser program("zolal");
+    argparse::ArgumentParser program(
+        "zolal",
+        std::format("{}.{}.{}", ZOLAL_VERSION_MAJOR, ZOLAL_VERSION_MINOR, ZOLAL_VERSION_PATCH));
 
-    program.add_argument("version").help("Shows verison of Zolal.");
     program.add_argument("-S", "--source-dir")
         .help("Place where source code and manifest.zl resides.")
         .remaining()
         .metavar("source-dir");
-    program.add_argument("-B", "--build-dir")
+    program.add_argument("-B", "--output-dir")
         .help("Output directory for zolal builds.")
         .remaining()
         .metavar("output-dir");
@@ -48,13 +50,31 @@ int main(int argc, char *argv[]) {
         std::exit(0);
     }
 
-    const std::string manifest_path = "manifest.toml";
+    try {
+        program.parse_args(argc, argv);
+    } catch (const std::exception &err) {
+        std::cerr << err.what() << std::endl;
+        std::cerr << program;
+        std::exit(1);
+    }
+
+    std::string manifest_source_directory = ".";
+    if (program.is_used("--source-dir")) {
+        manifest_source_directory = program.get<std::string>("--source-dir");
+        if (!std::filesystem::exists(manifest_source_directory)) {
+            std::cerr << "Source directory does not exist.\n";
+            return 1;
+        }
+    }
+
+    std::filesystem::path manifest_path =
+        std::filesystem::path(manifest_source_directory) / "manifest.toml";
     if (!std::filesystem::exists(manifest_path)) {
         std::cerr << "No manifest.toml found in current directory.\n";
         return 1;
     }
 
-    auto manifest = Zolal::Manifest::load(manifest_path);
+    auto manifest = Zolal::Manifest::load(manifest_path.string());
     if (!manifest) {
         std::cerr << "Failed to load manifest\n";
         return 1;
@@ -62,22 +82,27 @@ int main(int argc, char *argv[]) {
 
     Zolal::Preprocessor pp(*manifest);
 
-    // for now the output directory is gonna be the project root/.zpp/
-    // TODO: is that ok?
-    const std::string out_dir         = ".zpp";
-    bool              had_errors      = false;
-    int               files_processed = 0;
+    std::string out_dir = ".zpp";
+
+    if (program.is_used("--output-dir")) {
+        out_dir = program.get<std::string>("--output-dir");
+    }
+
+    bool had_errors      = false;
+    int  files_processed = 0;
 
     // processes project files
     for (const auto &source_path : manifest->sources) {
-        if (!std::filesystem::exists(source_path)) {
-            std::cerr << "Source file not found" << source_path << std::endl;
+        if (!std::filesystem::exists(std::filesystem::path(manifest_source_directory) /
+                                     source_path)) {
+            std::cerr << "Source file not found " << source_path << std::endl;
             had_errors = true;
             continue;
         }
 
-        std::string content = read_file(source_path);
-        auto        result  = pp.process(content);
+        std::string content =
+            read_file((std::filesystem::path(manifest_source_directory) / source_path).string());
+        auto result = pp.process(content);
 
         if (!result.ok()) {
             for (const auto &err : result.errors) {
