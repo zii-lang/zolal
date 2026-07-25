@@ -38,12 +38,12 @@ int main(int argc, char *argv[]) {
 
     program.add_argument("-S", "--source-dir")
         .help("Place where source code and manifest.zl resides.")
-        .remaining()
-        .metavar("source-dir");
+        .default_value(".")
+        .nargs(1);
     program.add_argument("-B", "--output-dir")
         .help("Output directory for zolal builds.")
-        .remaining()
-        .metavar("output-dir");
+        .default_value("zout")
+        .nargs(1);
 
     if (argc == 1) {
         std::cout << program;
@@ -58,13 +58,10 @@ int main(int argc, char *argv[]) {
         std::exit(1);
     }
 
-    std::string manifest_source_directory = ".";
-    if (program.is_used("--source-dir")) {
-        manifest_source_directory = program.get<std::string>("--source-dir");
-        if (!std::filesystem::exists(manifest_source_directory)) {
-            std::cerr << "Source directory does not exist.\n";
-            return 1;
-        }
+    std::string manifest_source_directory = program.get<std::string>("--source-dir");
+    if (!std::filesystem::exists(manifest_source_directory)) {
+        std::cerr << "Source directory does not exist.\n";
+        return 1;
     }
 
     std::filesystem::path manifest_path =
@@ -82,14 +79,9 @@ int main(int argc, char *argv[]) {
 
     Zolal::Preprocessor pp(*manifest);
 
-    std::string out_dir = ".zpp";
-
-    if (program.is_used("--output-dir")) {
-        out_dir = program.get<std::string>("--output-dir");
-    }
-
-    bool had_errors      = false;
-    int  files_processed = 0;
+    std::string out_dir         = program.get<std::string>("--output-dir");
+    bool        had_errors      = false;
+    int         files_processed = 0;
 
     // processes project files
     for (const auto &source_path : manifest->sources) {
