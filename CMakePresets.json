@@ -1,0 +1,129 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
+
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+
+    {
+      "name": "ninja",
+      "hidden": true,
+      "inherits": "base",
+      "generator": "Ninja"
+    },
+
+    {
+      "name": "x64",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_SYSTEM_PROCESSOR": "x86_64"
+      }
+    },
+
+    {
+      "name": "x86",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_SYSTEM_PROCESSOR": "x86"
+      }
+    },
+
+    {
+      "name": "arm64",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_SYSTEM_PROCESSOR": "ARM64"
+      }
+    },
+
+    {
+      "name": "x64-debug",
+      "inherits": ["ninja", "x64"],
+      "binaryDir": "${sourceDir}/build/x64/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+
+    {
+      "name": "x64-release",
+      "inherits": ["ninja", "x64"],
+      "binaryDir": "${sourceDir}/build/x64/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+
+    {
+      "name": "x86-debug",
+      "inherits": ["ninja", "x86"],
+      "binaryDir": "${sourceDir}/build/x86/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+
+    {
+      "name": "x86-release",
+      "inherits": ["ninja", "x86"],
+      "binaryDir": "${sourceDir}/build/x86/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+
+    {
+      "name": "arm64-debug",
+      "inherits": ["ninja", "arm64"],
+      "binaryDir": "${sourceDir}/build/arm64/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+
+    {
+      "name": "arm64-release",
+      "inherits": ["ninja", "arm64"],
+      "binaryDir": "${sourceDir}/build/arm64/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "x64-debug",
+      "configurePreset": "x64-debug"
+    },
+    {
+      "name": "x64-release",
+      "configurePreset": "x64-release"
+    },
+    {
+      "name": "x86-debug",
+      "configurePreset": "x86-debug"
+    },
+    {
+      "name": "x86-release",
+      "configurePreset": "x86-release"
+    },
+    {
+      "name": "arm64-debug",
+      "configurePreset": "arm64-debug"
+    },
+    {
+      "name": "arm64-release",
+      "configurePreset": "arm64-release"
+    }
+  ]
+}

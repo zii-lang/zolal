@@ -1,6 +1,7 @@
+#include <zolal/DirectiveLexer.hpp>
+
 #include <cctype>
 #include <memory>
-#include <zolal/DirectiveLexer.hpp>
 
 namespace Zolal {
 

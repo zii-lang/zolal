@@ -1,8 +1,10 @@
-#include "zolal/Manifest.hpp"
+#include <zolal/Manifest.hpp>
+
+#include <toml++/toml.h>
+
 #include <filesystem>
 #include <iostream>
 #include <ostream>
-#include <toml++/toml.h>
 
 namespace Zolal {
     std::optional<Manifest> Manifest::load(const std::string &path) {

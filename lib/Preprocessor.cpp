@@ -1,8 +1,9 @@
-#include "zolal/DirectiveLexer.hpp"
-#include "zolal/Manifest.hpp"
+#include <zolal/DirectiveLexer.hpp>
+#include <zolal/Manifest.hpp>
+#include <zolal/Preprocessor.hpp>
+
 #include <sstream>
 #include <type_traits>
-#include <zolal/Preprocessor.hpp>
 
 namespace Zolal {
 
