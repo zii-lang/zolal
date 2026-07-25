@@ -1,12 +1,12 @@
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-
 #include <zolal/Manifest.hpp>
 #include <zolal/Preprocessor.hpp>
 
 #include <argparse/argparse.hpp>
+
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 static std::string read_file(const std::string &path) {
     std::ifstream f(path);
@@ -29,25 +29,24 @@ static bool write_file(const std::string &path, const std::string &content) {
     return true;
 }
 
-int main(int argc, char * argv[]) {
-	// TODO: get this from argv[0], split slashes and get last.
-	argparse::ArgumentParser program("zolal");
+int main(int argc, char *argv[]) {
+    // TODO: get this from argv[0], split slashes and get last.
+    argparse::ArgumentParser program("zolal");
 
-	program.add_argument("version")
-		.help("Shows verison of Zolal.");
-	program.add_argument("-S", "--source-dir")
-		.help("Place where source code and manifest.zl resides.")
-		.remaining()
-		.metavar("source-dir");
-	program.add_argument("-B", "--build-dir")
-		.help("Output directory for zolal builds.")
-		.remaining()
-		.metavar("output-dir");
+    program.add_argument("version").help("Shows verison of Zolal.");
+    program.add_argument("-S", "--source-dir")
+        .help("Place where source code and manifest.zl resides.")
+        .remaining()
+        .metavar("source-dir");
+    program.add_argument("-B", "--build-dir")
+        .help("Output directory for zolal builds.")
+        .remaining()
+        .metavar("output-dir");
 
-	if( argc == 1 ) {
-		std::cout << program;
-		std::exit(0);
-	}
+    if (argc == 1) {
+        std::cout << program;
+        std::exit(0);
+    }
 
     const std::string manifest_path = "manifest.toml";
     if (!std::filesystem::exists(manifest_path)) {
