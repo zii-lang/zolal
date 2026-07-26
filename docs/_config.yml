@@ -1,0 +1,29 @@
+title: Zolal Documentation
+email: zlang@gmail.com
+description: ""
+baseurl: ""
+url: ""
+github_username:  zii-lang/zolal
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+
+sass:
+  style: compressed
+
+include:
+  - assets/css/blueberry-theme.css
+
+collections:
+  book:
+    output: true
+    permalink: /book/:path
+
+defaults:
+  - scope:
+      path: ""
+      type: book
+    values:
+      layout: default

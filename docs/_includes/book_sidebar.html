@@ -1,0 +1,34 @@
+{% assign grouped = site.book | group_by_exp: "doc", "doc.relative_path | split: '/' | slice: 1, 1 | first" %}
+
+<div class="sidebar-content">
+  <h3 class="sidebar-title">Documentation</h3>
+
+  {% for group in grouped %}
+    {% assign chapter_num = group.name | remove: 'ch' | plus: 0 %}
+    {% assign sorted_items = group.items | sort: "nav_order" %}
+    {% assign chapter_index = sorted_items.first %}
+
+    <div class="chapter-group {% if page.url contains group.name %}active-chapter{% endif %}">
+      <a href="{{ chapter_index.url }}" class="chapter-link {% if page.url == chapter_index.url %}active{% endif %}">
+        <span class="chapter-number">{{ chapter_num }}</span>
+        <span class="chapter-title">{{ chapter_index.title }}</span>
+      </a>
+
+      {% if sorted_items.size > 1 %}
+        <ul class="sub-menu">
+          {% for doc in sorted_items %}
+            {% unless doc == chapter_index %}
+              {% assign section_index = forloop.index | minus: 1 %}
+              <li>
+                <a href="{{ doc.url }}" class="section-link {% if page.url == doc.url %}active{% endif %}">
+                  <span class="section-number">{{ chapter_num }}.{{ section_index }}</span>
+                  <span class="section-title">{{ doc.title }}</span>
+                </a>
+              </li>
+            {% endunless %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>

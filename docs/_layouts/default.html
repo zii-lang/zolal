@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ page.title }} | Z Language</title>
+    <link rel="stylesheet" href="{{ "/assets/css/blueberry-theme.css" | relative_url }}" />
+    <link rel="stylesheet" href="{{ "/assets/css/blueberry-syntax.css" | relative_url }}" />
+    <link rel="icon" href="{{ "/assets/img/zlang.jpg" | relative_url }}" />
+  </head>
+  <body>
+  <header class="site-header">
+    <div class="header-wrapper">
+      <div class="site-title-container">
+        <img src="{{ '/assets/img/zlang.jpg' | relative_url }}" alt="Z Logo" class="site-logo">
+        <h1 class="site-title">
+          <a href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
+        </h1>
+      </div>
+
+      <nav class="site-nav">
+        <a href="https://github.com/{{ site.github_username }}">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+    <div class="main-wrapper">
+      <aside class="sidebar">
+        <nav>
+          {% include book_sidebar.html %}
+        </nav>
+      </aside>
+
+      <main class="content">
+        <div class="container">
+          {{ content }}
+        </div>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© {{ site.time | date: '%Y' }} Z Language. Built with 💙</p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Make chapters collapsible via arrow
+        document.querySelectorAll('.chapter-group').forEach(chapter => {
+          const link = chapter.querySelector('.chapter-link');
+          const subMenu = chapter.querySelector('.sub-menu');
+
+          if (subMenu) {
+            // Create a clickable arrow element
+            const arrow = document.createElement('span');
+            arrow.className = 'chapter-arrow';
+            arrow.innerHTML = '›';
+            link.appendChild(arrow);
+
+            // Arrow click = collapse/expand (prevent navigation)
+            arrow.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              chapter.classList.toggle('collapsed');
+            });
+
+            // Chapter link click = navigate normally
+            // (arrow's stopPropagation prevents this when clicking arrow)
+          }
+        });
+
+        // Auto-expand the active chapter
+        const activeChapter = document.querySelector('.active-chapter');
+        if (activeChapter) {
+          activeChapter.classList.remove('collapsed');
+        }
+      });
+    </script>
+  </body>
+</html>
