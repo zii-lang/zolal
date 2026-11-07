@@ -32,16 +32,6 @@ option(ZOLAL_BUILD_STATIC "Build static library" ON)
 option(ZOLAL_ENABLE_TESTS "Enable unit tests" OFF)
 option(ZOLAL_BUILD_EXECUTEABLE "Build zolal executable" ON)
 
-FetchContent_Declare(
-	tomlPlusPlus
-	GIT_REPOSITORY
-	https://github.com/marzer/tomlplusplus.git
-	GIT_TAG
-	v3.4.0
-)
-FetchContent_MakeAvailable(tomlplusplus)
-list(APPEND zolal_libraries "tomlplusplus::tomlplusplus")
-
 file(GLOB_RECURSE zolal_library_sources
 	lib/*.cpp
 )
